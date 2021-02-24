@@ -1,16 +1,16 @@
-(ns graphql.core
-  (:require
-    [com.walmartlabs.lacinia.util :as util]
-    [com.walmartlabs.lacinia.schema :as schema]
-    [io.pedestal.http :as http]
-    [com.walmartlabs.lacinia.pedestal2 :as lp]
-    [com.walmartlabs.lacinia.pedestal :refer [inject]]
-    [graphql.pubsub :as pubsub]))
+ (ns graphql.core
+   (:require
+     [com.walmartlabs.lacinia.util :as util]
+     [com.walmartlabs.lacinia.schema :as schema]
+     [io.pedestal.http :as http]
+     [com.walmartlabs.lacinia.pedestal2 :as lp]
+     [com.walmartlabs.lacinia.pedestal :refer [inject]]
+     [graphql.pubsub :as pubsub]))
 
 (defonce chatrooms
-  (atom {1 {:title "Unifize"
+  (atom {1 {:title "Test"
             :id 1}
-         2 {:title "Admin"
+         2 {:title "Test2"
             :id 2}}))
 
 (defn chatroom-by-id
@@ -62,8 +62,8 @@
    :enter (fn [{{:keys [headers uri request-method] :as request} :request :as context}]
             (if (= "some-value" (headers "token")) ;; TODO real auth logic
               (assoc-in context [:request :auth-info]
-                {:user-id 1234} ;; TODO whatever info you want to pass to the resolvers
-                )
+                {:user-id 1234}) ;; TODO whatever info you want to pass to the resolvers
+                
               (assoc context :response
                 {:status 403
                  :headers {}
@@ -76,8 +76,8 @@
                        first)]
     (if (= token "token") ;; TODO real auth
       (assoc-in context [:request :lacinia-app-context :request :auth-info]
-        {:user-id 1234} ;; TODO set this to pass data to resolver
-        )
+        {:user-id 1234}) ;; TODO set this to pass data to resolver
+        
       (do
         (.sendForbidden response "Forbidden")
         context))))
@@ -110,8 +110,8 @@
                                                  ;; subs can be authenticated by an initial message
                                                  ;; here we force the IDE to pass this as initial message
                                                  ;; is received by stream resolver in (:com.walmartlabs.lacinia/connection-params context)
-                                                 :ide-connection-params {"token" "some-valuex"}
-                                                 })
+                                                 :ide-connection-params {"token" "some-valuex"}})
+                                                 
                                 :route-name ::graphiql-ide]}
                              (lp/graphiql-asset-routes asset-path))
          ::http/port 8934

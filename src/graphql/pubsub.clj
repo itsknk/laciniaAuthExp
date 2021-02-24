@@ -1,4 +1,4 @@
-(ns graphql.pubsub)
+ (ns graphql.pubsub)
 
 (defonce state (atom nil))
 
